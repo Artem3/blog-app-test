@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import com.confitech.test.blogapp.entity.Post;
 import com.confitech.test.blogapp.exception.ResourceNotFoundException;
 import com.confitech.test.blogapp.repository.PostRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ public class PostServiceTest {
         post.setTitle("Test Title");
         post.setMessage("Test Message");
         post.setCategory("Test Category");
-        post.setCreatedAt(now());
+        post.setCreatedAt(now().minusDays(1));
         post.setUpdatedAt(now());
     }
 
@@ -59,9 +60,7 @@ public class PostServiceTest {
     public void testFindById_NotFound() {
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            postService.findById(1L);
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> postService.findById(1L));
 
         assertEquals("Post not found with id 1", exception.getMessage());
         verify(postRepository, times(1)).findById(1L);
@@ -102,9 +101,7 @@ public class PostServiceTest {
     public void testDeleteById_NotFound() {
         when(postRepository.existsById(anyLong())).thenReturn(false);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            postService.deleteById(1L);
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> postService.deleteById(1L));
 
         assertEquals("Post not found with id 1", exception.getMessage());
         verify(postRepository, times(1)).existsById(1L);
@@ -135,12 +132,23 @@ public class PostServiceTest {
         Post post = new Post();
         post.setId(1L);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            postService.updatePost(post);
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> postService.updatePost(post));
 
         assertEquals("Post not found with id 1", exception.getMessage());
         verify(postRepository, times(1)).findById(1L);
         verify(postRepository, times(0)).save(any(Post.class));
+    }
+
+    @Test
+    public void testFindPostsBeforeDate() {
+        List<Post> posts = List.of(post);
+        LocalDateTime date = now();
+        when(postRepository.findByCreatedAtBefore(any(LocalDateTime.class))).thenReturn(posts);
+
+        List<Post> foundPosts = postService.findPostsBeforeDate(date);
+
+        assertNotNull(foundPosts);
+        assertEquals(1, foundPosts.size());
+        verify(postRepository, times(1)).findByCreatedAtBefore(date);
     }
 }
