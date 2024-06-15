@@ -2,7 +2,9 @@ package com.confitech.test.blogapp.service;
 
 import static java.util.stream.Collectors.toList;
 
+import com.confitech.test.blogapp.dto.CreatePostDTO;
 import com.confitech.test.blogapp.dto.PostDTO;
+import com.confitech.test.blogapp.dto.UpdatePostDTO;
 import com.confitech.test.blogapp.entity.Post;
 import com.confitech.test.blogapp.exception.ResourceNotFoundException;
 import com.confitech.test.blogapp.mapper.PostMapper;
@@ -46,19 +48,15 @@ public class PostService {
     }
 
     @Transactional
-    public PostDTO save(PostDTO postDTO) {
+    public PostDTO save(CreatePostDTO postDTO) {
         Post post = postMapper.toEntity(postDTO);
-        post.setId(null);
         Post savedPost = postRepository.save(post);
         return postMapper.toDTO(savedPost);
     }
 
     @Transactional
-    public PostDTO updatePost(PostDTO postDTO) {
+    public PostDTO updatePost(UpdatePostDTO postDTO) {
         Long id = postDTO.getId();
-        if (id == null) {
-            throw new IllegalArgumentException("Post ID cannot be null for update");
-        }
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
         existingPost.setTitle(postDTO.getTitle());

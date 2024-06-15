@@ -1,8 +1,11 @@
 package com.confitech.test.blogapp.controller;
 
+import com.confitech.test.blogapp.dto.CreatePostDTO;
 import com.confitech.test.blogapp.dto.PostDTO;
+import com.confitech.test.blogapp.dto.UpdatePostDTO;
 import com.confitech.test.blogapp.service.PostService;
 import com.confitech.test.blogapp.util.DateTimeUtil;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,12 +42,12 @@ public class PostController {
     }
 
     @PostMapping
-    public PostDTO createPost(@RequestBody PostDTO postDTO) {
+    public PostDTO createPost(@Valid @RequestBody CreatePostDTO postDTO) {
         return postService.save(postDTO);
     }
 
     @PutMapping
-    public PostDTO updatePost(@RequestBody PostDTO postDTO) {
+    public PostDTO updatePost(@Valid @RequestBody UpdatePostDTO postDTO) {
         return postService.updatePost(postDTO);
     }
 
