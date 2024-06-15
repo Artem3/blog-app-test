@@ -1,10 +1,14 @@
-package com.confitech.test.blogapp.dto;
+package com.confitech.test.blogapp.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CreatePostDTO {
+public class UpdatePostDTO {
+
+    @NotNull(message = "ID is mandatory")
+    private Long id;
 
     @NotBlank(message = "Title is mandatory")
     private String title;

@@ -1,8 +1,8 @@
 package com.confitech.test.blogapp.controller;
 
-import com.confitech.test.blogapp.dto.CreatePostDTO;
-import com.confitech.test.blogapp.dto.PostDTO;
-import com.confitech.test.blogapp.dto.UpdatePostDTO;
+import com.confitech.test.blogapp.dto.post.CreatePostDTO;
+import com.confitech.test.blogapp.dto.post.PostDTO;
+import com.confitech.test.blogapp.dto.post.UpdatePostDTO;
 import com.confitech.test.blogapp.service.PostService;
 import com.confitech.test.blogapp.util.DateTimeUtil;
 import jakarta.validation.Valid;

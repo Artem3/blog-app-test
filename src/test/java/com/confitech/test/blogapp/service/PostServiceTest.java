@@ -10,9 +10,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.confitech.test.blogapp.dto.CreatePostDTO;
-import com.confitech.test.blogapp.dto.PostDTO;
-import com.confitech.test.blogapp.dto.UpdatePostDTO;
+import com.confitech.test.blogapp.dto.post.CreatePostDTO;
+import com.confitech.test.blogapp.dto.post.PostDTO;
+import com.confitech.test.blogapp.dto.post.UpdatePostDTO;
 import com.confitech.test.blogapp.entity.Post;
 import com.confitech.test.blogapp.exception.ResourceNotFoundException;
 import com.confitech.test.blogapp.mapper.PostMapper;

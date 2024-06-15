@@ -1,12 +1,21 @@
 package com.confitech.test.blogapp.mapper;
 
-import com.confitech.test.blogapp.dto.CreatePostDTO;
-import com.confitech.test.blogapp.dto.PostDTO;
+import static java.util.stream.Collectors.toList;
+
+import com.confitech.test.blogapp.dto.post.CreatePostDTO;
+import com.confitech.test.blogapp.dto.post.PostDTO;
 import com.confitech.test.blogapp.entity.Post;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostMapper {
+
+    private final CommentMapper commentMapper;
+
+    public PostMapper(CommentMapper commentMapper) {
+        this.commentMapper = commentMapper;
+    }
 
     public PostDTO toDTO(Post post) {
         if (post == null) {
@@ -19,7 +28,13 @@ public class PostMapper {
         dto.setCategory(post.getCategory());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setUpdatedAt(post.getUpdatedAt());
-
+        if (post.getComments() != null) {
+            dto.setComments(post.getComments().stream()
+                    .map(commentMapper::toDTO)
+                    .collect(toList()));
+        } else {
+            dto.setComments(List.of());
+        }
         return dto;
     }
 
